@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Illusion – Rêve & Réalité</title>
+  <!-- Polices -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; font-family:'Open Sans',Arial,sans-serif; background-color:#f8f4f0; color:#2c2c3a; }
+    header { background:#1b1b35; color:#fcd77f; padding:15px 30px; display:flex; justify-content:space-between; align-items:center; font-family:'Cinzel', serif; }
+    header h1 { margin:0; font-size:22px; }
+    nav a { color:#fcd77f; margin-left:15px; text-decoration:none; font-weight:600; }
+    nav a:hover { color:#ffffff; }
+    .hero { padding:60px 20px; text-align:center; background:linear-gradient(135deg,#1b1b35,#2c2c3a); color:#fcd77f; }
+    .hero h2 { font-size:34px; margin-bottom:10px; }
+    .hero p { font-size:18px; margin-bottom:25px; color:#ffffff; }
+    .hero button { padding:12px 20px; margin:5px; border:none; border-radius:5px; font-size:16px; cursor:pointer; font-family:'Open Sans', sans-serif; }
+    .btn-primary { background-color:#fcd77f; color:#1b1b35; }
+    .btn-secondary { background-color:#ffffff; color:#1b1b35; }
+    section { padding:40px 20px; max-width:1000px; margin:auto; }
+    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+    .card { background:white; padding:20px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    footer { background:#1b1b35; color:#fcd77f; text-align:center; padding:15px; margin-top:40px; font-family:'Cinzel', serif; }
+    input, select, textarea { font-family:'Open Sans', sans-serif; font-size:16px; }
+    .social-links a { margin-right:15px; color:#1b1b35; text-decoration:none; font-weight:bold; }
+    .social-links a:hover { color:#fcd77f; }
+  </style>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<header>
+  <h1>Illusion – Rêve & Réalité 📖</h1>
+  <nav>
+    <a href="#">Accueil</a>
+    <a href="#lire">Lire</a>
+    <a href="#ecrire">Écrire</a>
+    <a href="#">Défis</a>
+    <a href="#connexion">Connexion</a>
+    <a href="#profil">Profil</a>
+    <a href="#apropos">À propos</a>
+  </nav>
+</header>
+<section class="hero">
+  <h2>Écris ce que le monde n’ose pas dire</h2>
+  <p>Là où les rêves rencontrent la réalité</p>
+  <button class="btn-primary">Commencer à écrire</button>
+  <button class="btn-secondary">Lire des romans</button>
+</section>
+<section id="lire">
+  <h2>📚 Lire des romans</h2>
+  <p>Découvre des histoires nées du rêve et ancrées dans la réalité.</p>
+  <div class="cards" id="romans-list"></div>
+</section>
+<section id="ecrire">
+  <h2>✍️ Écrire un roman</h2>
+  <div class="card">
+    <label>Titre du roman</label><br />
+    <input type="text" id="titre-roman" placeholder="Entrez le titre" style="width:100%; padding:10px; margin:10px 0;" />
+    <label>Genre</label><br />
+    <select id="genre-roman" style="width:100%; padding:10px; margin:10px 0;">
+      <option>Amour</option>
+      <option>Social</option>
+      <option>Spirituel</option>
+      <option>Mystère</option>
+      <option>Fantastique</option>
+    </select>
+    <label>Chapitre</label><br />
+    <textarea id="chapitre-texte" placeholder="Commence ton histoire ici…" style="width:100%; height:200px; padding:10px; margin:10px 0;"></textarea>
+    <button class="btn-primary" id="save-btn">💾 Sauvegarder</button>
+  </div>
+</section>
+<section id="connexion">
+  <h2>👤 Connexion / Inscription Auteur</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Connexion</h3>
+      <input type="email" id="login-email" placeholder="Email" style="width:100%; padding:10px; margin:8px 0;" />
+      <input type="password" id="login-password" placeholder="Mot de passe" style="width:100%; padding:10px; margin:8px 0;" />
+      <button class="btn-primary" id="login-btn">Se connecter</button>
+    </div>
+    <div class="card">
+      <h3>Inscription</h3>
+      <input type="text" id="signup-nom" placeholder="Nom ou pseudo" style="width:100%; padding:10px; margin:8px 0;" />
+      <input type="email" id="signup-email" placeholder="Email" style="width:100%; padding:10px; margin:8px 0;" />
+      <input type="password" id="signup-password" placeholder="Mot de passe" style="width:100%; padding:10px; margin:8px 0;" />
+      <button class="btn-secondary" id="signup-btn">Créer un compte</button>
+    </div>
+  </div>
+</section>
+<section id="profil">
+  <h2>👤 Profil Auteur</h2>
+  <div class="card" id="profile-card">
+    <img src="https://via.placeholder.com/150" alt="Avatar" style="border-radius:50%; margin-bottom:15px;" />
+    <h3 id="profile-pseudo">Jephte ENZA</h3>
+    <p id="profile-bio">Bio : Passionné par les histoires qui font rêver et réfléchir.</p>
+    <h4>Romans publiés :</h4>
+    <ul id="profile-romans"></ul>
+    <p>📖 Lectures totales : <span id="profile-lectures">0</span> | ❤️ Likes : <span id="profile-likes">0</span></p>
+    <button class="btn-secondary">Modifier le profil</button>
+  </div>
+</section>
+<section id="apropos">
+  <h2>🌟 À propos du créateur</h2>
+  <div class="card">
+    <p>Ce site a été imaginé et développé par <strong>Jephte ENZA</strong>, passionné de littérature et d’écriture numérique. L’objectif est de créer un espace où les auteurs peuvent partager leurs histoires et où les lecteurs peuvent découvrir des univers uniques. Merci de soutenir la créativité et les rêves !</p>
+    <div class="social-links">
+      <a href="https://www.linkedin.com/in/jephte-enza" target="_blank">LinkedIn</a>
+      <a href="https://twitter.com/JephteENZA" target="_blank">Twitter</a>
+      <a href="https://github.com/JephteENZA" target="_blank">GitHub</a>
+    </div>
+  </div>
+</section>
+<footer>
+  <p>© 2025 – Illusion : Rêve & Réalité | Créé par Jephte ENZA</p>
+</footer>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {apiKey:"TA_CLE_API", authDomain:"TON_PROJET.firebaseapp.com", projectId:"TON_PROJET", storageBucket:"TON_PROJET.appspot.com", messagingSenderId:"TON_ID", appId:"TON_APP_ID"};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// Inscription
+document.querySelector('#signup-btn').addEventListener('click',()=>{const email=document.querySelector('#signup-email').value;const password=document.querySelector('#signup-password').value;auth.createUserWithEmailAndPassword(email,password).then(()=>alert('Compte créé !')).catch(e=>alert(e.message));});
+// Connexion
+document.querySelector('#login-btn').addEventListener('click',()=>{const email=document.querySelector('#login-email').value;const password=document.querySelector('#login-password').value;auth.signInWithEmailAndPassword(email,password).then(()=>alert('Connecté !')).catch(e=>alert(e.message));});
+// Sauvegarde roman
+document.querySelector('#save-btn').addEventListener('click',()=>{const titre=document.querySelector('#titre-roman').value;const genre=document.querySelector('#genre-roman').value;const chapitre=document.querySelector('#chapitre-texte').value;if(!auth.currentUser){alert('Connectez-vous d’abord !');return;}db.collection('romans').add({auteur:auth.currentUser.email,titre:titre,genre:genre,chapitre:chapitre,date:new Date()}).then(()=>alert('Roman sauvegardé !')).catch(e=>alert(e.message));});
+// Affichage romans dynamiques
+db.collection('romans').orderBy('date','desc').onSnapshot(snapshot=>{const list=document.querySelector('#romans-list');list.innerHTML='';snapshot.forEach(doc=>{const r=doc.data();list.innerHTML+=`<div class='card'><h3>${r.titre}</h3><p><strong>Auteur :</strong> ${r.auteur}</p><p><strong>Genre :</strong> ${r.genre}</p><button class='btn-secondary'>📖 Lire</button></div>`;});});
+</script>
+</body>
+</html>
